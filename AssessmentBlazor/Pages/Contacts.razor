@@ -1,0 +1,66 @@
+﻿@page "/"
+@page "/contacts"
+@using AssessmentBlazor.Model
+@using AssessmentBlazor.Services
+
+@inject ContactService ContactService
+
+<h3>Contact List</h3>
+@if (contacts == null)
+{
+    <div class="text-center my-4">
+        <div class="spinner-border" role="status"></div>
+        <p class="mt-2">Loading contacts...</p>
+    </div>
+}
+else if (contacts.Count == 0)
+{
+    <p class="alert alert-warning text-center">No contacts found.</p>
+}
+else
+{
+    <div style="overflow-x: auto; white-space: nowrap;">
+        <table class="table table-striped table-hover table-bordered">
+            <thead class="table-dark">
+                <tr>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Email</th>
+                    <th>Phone Number</th>
+                    <th>Address</th>
+                    <th>City</th>
+                    <th>State</th>
+                    <th>Country</th>
+                    <th>Postal Code</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var c in contacts)
+                {
+                    <tr>
+                        <td>@c.FirstName</td>
+                        <td>@c.LastName</td>
+                        <td>@c.Email</td>
+                        <td>@c.PhoneNumber</td>
+                        <td>@c.Address</td>
+                        <td>@c.City</td>
+                        <td>@c.State</td>
+                        <td>@c.Country</td>
+                        <td>@c.PostalCode</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+@code {
+    List<Contact> contacts;
+
+    protected override async Task OnInitializedAsync()
+    {
+        contacts = await ContactService.GetAllContacts();
+    }
+}
+
